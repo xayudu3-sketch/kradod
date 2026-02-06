@@ -2,19 +2,28 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Extreme Jump Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <div class="game-container">
+        <div id="start-screen">
+            <h1>EXTREME JUMP</h1>
+            <p>คะแนนสูงสุดของคุณคือ: <span id="bestScore">0</span></p>
+            <button onclick="startGame()">START GAME</button>
+            <p style="margin-top: 15px; font-size: 0.8em;">กด Spacebar หรือ แตะหน้าจอเพื่อกระโดด</p>
+        </div>
+
         <div class="scoreboard">
             <div id="score">คะแนน: 0</div>
-            <div id="highScore">สถิติสูงสุด: 0</div>
         </div>
+
         <div id="character"></div>
         <div id="obstacle"></div>
     </div>
-    <div class="instruction">กด [ Spacebar ] หรือ [ คลิก ] เพื่อกระโดด</div>
+
     <script src="script.js"></script>
 </body>
 </html>
