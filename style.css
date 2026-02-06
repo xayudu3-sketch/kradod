@@ -1,53 +1,24 @@
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f0f0f0;
+/* เพิ่มเติมจากของเดิม */
+.scoreboard {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    color: #333;
 }
 
-.game-container {
-    width: 600px;
-    height: 200px;
-    border-bottom: 2px solid #333;
-    background-color: white;
-    position: relative;
-    overflow: hidden;
+#highScore {
+    color: #ff4757;
+    font-size: 0.9em;
+}
+
+.instruction {
+    margin-top: 20px;
+    font-family: sans-serif;
+    color: #888;
 }
 
 #character {
-    width: 50px;
-    height: 50px;
-    background-color: #ff4757;
-    position: absolute;
-    bottom: 0;
-    left: 50px;
-}
-
-/* คลาสสำหรับกระโดด */
-.animate-jump {
-    animation: jump 0.5s linear;
-}
-
-@keyframes jump {
-    0% { bottom: 0; }
-    30% { bottom: 100px; }
-    70% { bottom: 100px; }
-    100% { bottom: 0; }
-}
-
-#obstacle {
-    width: 20px;
-    height: 40px;
-    background-color: #2f3542;
-    position: absolute;
-    bottom: 0;
-    right: -20px;
-    animation: move 1.5s infinite linear;
-}
-
-@keyframes move {
-    0% { right: -20px; }
-    100% { right: 600px; }
+    transition: background-color 0.3s; /* ให้เวลาเปลี่ยนสีดูสมูท */
 }
