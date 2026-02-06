@@ -1,24 +1,101 @@
-/* เพิ่มเติมจากของเดิม */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #2f3542;
+    font-family: 'Arial', sans-serif;
+}
+
+.game-container {
+    width: 600px;
+    height: 200px;
+    border-bottom: 3px solid #ffffff;
+    background-color: #ffffff;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* หน้าจอ Start */
+#start-screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    color: white;
+    text-align: center;
+}
+
+#start-screen button {
+    padding: 12px 25px;
+    font-size: 1.2rem;
+    background-color: #2ed573;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#start-screen button:hover {
+    background-color: #26af5f;
+    transform: scale(1.05);
+}
+
+/* ตัวละคร */
+#character {
+    width: 50px;
+    height: 50px;
+    background-color: #ff4757;
+    position: absolute;
+    bottom: 0;
+    left: 50px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+/* อุปสรรค */
+#obstacle {
+    width: 25px;
+    height: 40px;
+    background-color: #2f3542;
+    position: absolute;
+    bottom: 0;
+    right: -30px;
+    display: none; /* ซ่อนไว้จนกว่าจะเริ่มเกม */
+}
+
+/* คะแนน */
 .scoreboard {
     position: absolute;
     top: 10px;
-    left: 10px;
-    font-family: 'Arial', sans-serif;
+    right: 20px;
+    font-size: 1.5rem;
     font-weight: bold;
     color: #333;
 }
 
-#highScore {
-    color: #ff4757;
-    font-size: 0.9em;
+/* Animation กระโดด */
+.animate-jump {
+    animation: jump 0.5s ease-out;
 }
 
-.instruction {
-    margin-top: 20px;
-    font-family: sans-serif;
-    color: #888;
+@keyframes jump {
+    0% { bottom: 0; }
+    40% { bottom: 120px; }
+    60% { bottom: 120px; }
+    100% { bottom: 0; }
 }
 
-#character {
-    transition: background-color 0.3s; /* ให้เวลาเปลี่ยนสีดูสมูท */
+/* Animation วิ่ง (จะถูกกำหนดความเร็วผ่าน JS) */
+@keyframes move {
+    0% { right: -30px; }
+    100% { right: 600px; }
 }
