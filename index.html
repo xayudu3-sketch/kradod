@@ -2,16 +2,19 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <title>เกมกระโดดนับคะแนน</title>
+    <title>Extreme Jump Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
-        <div id="score">คะแนน: 0</div>
-        <div id="timer">เวลา: 30</div>
+        <div class="scoreboard">
+            <div id="score">คะแนน: 0</div>
+            <div id="highScore">สถิติสูงสุด: 0</div>
+        </div>
         <div id="character"></div>
         <div id="obstacle"></div>
     </div>
+    <div class="instruction">กด [ Spacebar ] หรือ [ คลิก ] เพื่อกระโดด</div>
     <script src="script.js"></script>
 </body>
 </html>
