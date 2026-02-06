@@ -1,16 +1,31 @@
 const character = document.getElementById("character");
 const obstacle = document.getElementById("obstacle");
 const scoreElement = document.getElementById("score");
-const highScoreElement = document.getElementById("highScore");
+const bestScoreElement = document.getElementById("bestScore");
+const startScreen = document.getElementById("start-screen");
 
 let score = 0;
-let highScore = localStorage.getItem("highScore") || 0;
-highScoreElement.innerText = `สถิติสูงสุด: ${highScore}`;
+let isGameOver = true;
+let gameSpeed = 1.5;
 
-let gameSpeed = 1.5; // ความเร็วเริ่มต้น (วินาที)
-let isGameOver = false;
+// แสดง High Score จากเครื่อง
+let highScore = localStorage.getItem("jumpHighScore") || 0;
+bestScoreElement.innerText = highScore;
 
-// ฟังก์ชันกระโดด
+function startGame() {
+    isGameOver = false;
+    score = 0;
+    gameSpeed = 1.5;
+    scoreElement.innerText = "คะแนน: 0";
+    startScreen.style.display = "none";
+    
+    obstacle.style.display = "block";
+    obstacle.style.animation = `move ${gameSpeed}s infinite linear`;
+
+    // เริ่มระบบนับคะแนนและความยาก
+    startScoring();
+}
+
 function jump() {
     if (!character.classList.contains("animate-jump") && !isGameOver) {
         character.classList.add("animate-jump");
@@ -20,58 +35,56 @@ function jump() {
     }
 }
 
-// ควบคุมการกด
-document.addEventListener("keydown", (event) => {
-    if (event.code === "Space") jump();
-});
-document.addEventListener("touchstart", jump); // รองรับมือถือ
+// ควบคุมการเล่น
+document.addEventListener("keydown", (e) => { if (e.code === "Space") jump(); });
+document.addEventListener("touchstart", jump);
 
-// ตรวจจับการชนและอัปเดตเกม
-const gameLoop = setInterval(() => {
+function startScoring() {
+    const scoreInterval = setInterval(() => {
+        if (isGameOver) {
+            clearInterval(scoreInterval);
+            return;
+        }
+        score++;
+        scoreElement.innerText = `คะแนน: ${score}`;
+
+        // เพิ่มความยากทุกๆ 5 คะแนน
+        if (score % 5 === 0 && gameSpeed > 0.7) {
+            gameSpeed -= 0.1;
+            obstacle.style.animationDuration = `${gameSpeed}s`;
+        }
+
+        // เปลี่ยนสีตัวละครตามเลเวล
+        if (score >= 30) character.style.backgroundColor = "#1e3799"; // Blue
+        else if (score >= 20) character.style.backgroundColor = "#f6b93b"; // Yellow
+        else if (score >= 10) character.style.backgroundColor = "#78e08f"; // Green
+    }, 1000);
+}
+
+// ตรวจจับการชน
+const checkCollision = setInterval(() => {
     if (isGameOver) return;
 
     let charTop = parseInt(window.getComputedStyle(character).getPropertyValue("top"));
     let blockLeft = parseInt(window.getComputedStyle(obstacle).getPropertyValue("left"));
 
-    // ตรวจสอบการชน
+    // โซนที่เกิดการชน
     if (blockLeft < 90 && blockLeft > 50 && charTop >= 150) {
-        isGameOver = true;
-        obstacle.style.animation = "none";
-        obstacle.style.display = "none";
-        
-        if (score > highScore) {
-            localStorage.setItem("highScore", score);
-            alert(`New High Score! คะแนนของคุณคือ: ${score}`);
-        } else {
-            alert(`Game Over! คะแนนของคุณคือ: ${score}`);
-        }
-        location.reload();
+        endGame();
     }
-
-    // เมื่ออุปสรรควิ่งผ่านไป (นับคะแนน)
-    // เราจะใช้การเช็คตำแหน่งเพื่อเพิ่มคะแนนครั้งเดียวต่อรอบ
 }, 10);
 
-// เพิ่มคะแนนและความยาก
-const scoreTracker = setInterval(() => {
-    if (isGameOver) return;
+function endGame() {
+    isGameOver = true;
+    obstacle.style.animation = "none";
+    obstacle.style.display = "none";
     
-    score++;
-    scoreElement.innerText = `คะแนน: ${score}`;
-
-    // --- ระดับความยาก ---
-    // ทุกๆ 5 คะแนน จะวิ่งเร็วขึ้น 0.1 วินาที (ตันที่ 0.7 วินาที)
-    if (score % 5 === 0 && gameSpeed > 0.7) {
-        gameSpeed -= 0.05;
-        obstacle.style.animationDuration = `${gameSpeed}s`;
+    if (score > highScore) {
+        localStorage.setItem("jumpHighScore", score);
+        alert(`สุดยอด! สถิติใหม่: ${score}`);
+    } else {
+        alert(`จบเกม! คะแนนของคุณคือ: ${score}`);
     }
-
-    // --- เปลี่ยนสีตัวละคร ---
-    if (score >= 30) {
-        character.style.backgroundColor = "#747d8c"; // สีเทาเข้ม (Level Max)
-    } else if (score >= 20) {
-        character.style.backgroundColor = "#ffa502"; // สีส้ม (Level 3)
-    } else if (score >= 10) {
-        character.style.backgroundColor = "#2ed573"; // สีเขียว (Level 2)
-    }
-}, 1000); // เพิ่มคะแนนทุก 1 วินาทีที่รอดชีวิต
+    
+    location.reload(); // รีเซ็ตเกมกลับหน้าแรก
+}
